@@ -9,14 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.capchik.personalproject.azureDevOpsModels.ApiListResponse;
-import ru.capchik.personalproject.azureDevOpsModels.Pipeline;
-import ru.capchik.personalproject.azureDevOpsModels.PipelineCompactResponse;
+import ru.capchik.personalproject.azureDevOpsModels.BuildResponse;
 
 public class PipelinesAdapter extends RecyclerView.Adapter<PipelinesAdapter.ViewHolder> {
 
-    private ApiListResponse<Pipeline> data;
+    private ApiListResponse<BuildResponse> data;
 
-    public PipelinesAdapter(ApiListResponse<Pipeline> data) {
+    public PipelinesAdapter(ApiListResponse<BuildResponse> data) {
         this.data = data;
     }
 
@@ -34,7 +33,8 @@ public class PipelinesAdapter extends RecyclerView.Adapter<PipelinesAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        holder.getTextView().setText(data.getValue().get(position).getName());
+        holder.getTitleTextView().setText(data.getValue().get(position).getDefinition().getName());
+        holder.getResultTextView().setText(data.getValue().get(position).getResult());
     }
 
     @Override
@@ -43,17 +43,23 @@ public class PipelinesAdapter extends RecyclerView.Adapter<PipelinesAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
+        private final TextView titleTextView;
+        private final TextView resultTextView;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
 
-            textView = view.findViewById(R.id.textView);
+            titleTextView = view.findViewById(R.id.textView);
+            resultTextView = view.findViewById(R.id.result_text_view);
         }
 
-        public TextView getTextView() {
-            return textView;
+        public TextView getTitleTextView() {
+            return titleTextView;
+        }
+
+        public TextView getResultTextView() {
+            return resultTextView;
         }
     }
 }
