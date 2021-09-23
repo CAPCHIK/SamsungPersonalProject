@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,12 +20,10 @@ import ru.capchik.personalproject.azureDevOpsModels.BuildResponse;
 import ru.capchik.personalproject.azureDevOpsModels.Pipeline;
 
 public class MainActivity extends AppCompatActivity {
-private TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textView = findViewById(R.id.text_view);
 
 
         AzureDevOpsConfiguration configuration = new AzureDevOpsConfiguration(
@@ -44,10 +43,11 @@ private TextView textView;
             public void onResponse(@NonNull Call<ApiListResponse<BuildResponse>> call, @NonNull Response<ApiListResponse<BuildResponse>> response) {
                 ApiListResponse<BuildResponse> body = response.body();
                 assert body != null;
-                Toast.makeText(MainActivity.this, "found " + body.getCount() + " items, first is " + body.getValue().get(0).getDefinition().getName(), Toast.LENGTH_LONG).show();
                 RecyclerView list = MainActivity.this.findViewById(R.id.pipelines_list);
                 list.setAdapter(new PipelinesAdapter(body));
                 list.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                TextView loadingText = findViewById(R.id.loading_placeholder);
+                loadingText.setVisibility(View.GONE);
             }
 
             @Override

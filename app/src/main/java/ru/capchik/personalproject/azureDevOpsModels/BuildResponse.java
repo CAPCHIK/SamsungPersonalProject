@@ -8,6 +8,8 @@ public class BuildResponse {
     @SerializedName("_links")
     private ApiLinksObject links;
 
+
+    private TriggerInfo triggerInfo;
     private int id;
     private String buildNumber;
     private String status;
@@ -33,6 +35,14 @@ public class BuildResponse {
 
     public void setLinks(ApiLinksObject links) {
         this.links = links;
+    }
+
+    public TriggerInfo getTriggerInfo() {
+        return triggerInfo;
+    }
+
+    public void setTriggerInfo(TriggerInfo triggerInfo) {
+        this.triggerInfo = triggerInfo;
     }
 
     public int getId() {

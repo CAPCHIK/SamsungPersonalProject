@@ -3,4 +3,10 @@
     <string name="azureDevOpsOrganization">rtuitlab</string>
     <string name="azureDevOpsProject">RTU IT Lab</string>
     <string name="element_text">pipeline name</string>
+    <string name="build_success_status">build success status</string>
+    <string name="pipeline_folder">pipeline folder</string>
+    <string name="build_id">build id</string>
+    <string name="commit_message">commit message</string>
+    <string name="build_id_commit_message_separator"> • </string>
+    <string name="loading_placeholder">Loading…</string>
 </resources>

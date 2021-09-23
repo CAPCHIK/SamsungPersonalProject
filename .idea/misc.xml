@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/projects/PersonalProject/app/src/main/res/drawable/failed_build.xml" value="0.37864583333333335" />
+        <entry key="..\:/projects/PersonalProject/app/src/main/res/drawable/success_build.xml" value="0.37864583333333335" />
         <entry key="..\:/projects/PersonalProject/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
         <entry key="..\:/projects/PersonalProject/app/src/main/res/layout/pipeline_item.xml" value="0.3625" />
       </map>

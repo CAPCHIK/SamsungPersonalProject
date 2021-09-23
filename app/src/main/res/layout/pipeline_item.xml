@@ -1,22 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_marginStart="15sp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="5sp"
+    android:baselineAligned="true">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="3">
 
-        android:layout_marginVertical="10sp"
-        android:textSize="20sp"
-        android:text="@string/element_text" />
+        <ImageView
+            android:id="@+id/success_image"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:layout_marginHorizontal="5sp"
+            android:contentDescription="@string/build_success_status"
+            app:srcCompat="@drawable/build_success" />
 
-    <TextView
-        android:id="@+id/result_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textView"
-        android:text="@string/element_text" />
-</RelativeLayout>
+        <TextView
+            android:id="@+id/definition_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3sp"
+            android:layout_toEndOf="@id/success_image"
+            android:text="@string/element_text"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/build_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/definition_name"
+            android:layout_toEndOf="@id/success_image"
+            android:text="@string/build_id" />
+
+        <TextView
+            android:id="@+id/build_id_commit_message_separator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/definition_name"
+            android:layout_toEndOf="@id/build_id"
+            android:text="@string/build_id_commit_message_separator" />
+        <TextView
+            android:id="@+id/commit_message"
+            android:layout_width="match_parent"
+            android:layout_height="19sp"
+            android:layout_below="@id/definition_name"
+            android:layout_toEndOf="@id/build_id_commit_message_separator"
+            android:text="@string/commit_message"
+            android:ellipsize="end"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="0"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/build_id" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/commit_message" />
+    </LinearLayout>
+</LinearLayout>
