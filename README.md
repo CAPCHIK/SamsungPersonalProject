@@ -2,13 +2,20 @@
 
 Приложение позволяет просматривать стату автоматических сборок в сервисе Azure DevOps
 
-Для показательности примера в приложении используется открытый проект лаборатории, доступный под адресу https://dev.azure.com/rtuitlab/RTU%20IT%20Lab
+Для показательности примера в приложении используется [открытый проект лаборатории RTU IT Lab](https://dev.azure.com/rtuitlab/RTU%20IT%20Lab/_build)
 
 ## Заметки
-Организацию и проект (обязательно открытый) можно установить любые, отредактировав значения в `strings.xml`
+Организацию и проект (обязательно открытый) можно установить собственные, отредактировав значения в `strings.xml`
 
-https://github.com/CAPCHIK/SamsungPersonalProject/blob/master/app/src/main/res/values/strings.xml#L3-L4
-
+```xml
+   
+<resources>
+    <string name="app_name">PersonalProject</string>
+    <string name="azureDevOpsOrganization">rtuitlab</string>
+    <string name="azureDevOpsProject">RTU IT Lab</string>
+    ...
+</resources>
+```
 ## Сторонние инструменты
 Проект использует API Azure DevOps - [документация](https://docs.microsoft.com/en-us/rest/api/azure/devops/build/?view=azure-devops-rest-5.1)
 
@@ -23,9 +30,11 @@ https://github.com/CAPCHIK/SamsungPersonalProject/blob/master/app/src/main/res/v
 Проверить приложение можно, скачав `app-debug.apk` со [страницы релизов](https://github.com/CAPCHIK/SamsungPersonalProject/releases/tag/v1.0)
 
 ## Демонстрация
-* Список сценариев сборки
+| Список сценариев сборки | Экран с информацией о сценарии |
+| --- | --- |
+|![image](https://user-images.githubusercontent.com/12235437/134478455-76e8279d-dd53-4f26-aef7-44994ad648a5.png)|![image](https://user-images.githubusercontent.com/12235437/134478463-ec363dc2-ad44-41ac-8718-54ee6fb65999.png)|
 
-* Экран с информацией о сценарии
 
-* видео демонстрация
+
+https://user-images.githubusercontent.com/12235437/134478686-f3bf4e83-6141-4f8a-bb91-bf71bf04f8cd.mp4
 
