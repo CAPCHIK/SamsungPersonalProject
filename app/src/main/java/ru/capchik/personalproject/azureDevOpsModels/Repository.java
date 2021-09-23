@@ -4,6 +4,7 @@ public class Repository {
     private String id;
     private String type;
     private boolean checkoutSubmodules;
+    private RepositoryProperties properties;
 
     public String getId() {
         return id;
@@ -27,5 +28,13 @@ public class Repository {
 
     public void setCheckoutSubmodules(boolean checkoutSubmodules) {
         this.checkoutSubmodules = checkoutSubmodules;
+    }
+
+    public RepositoryProperties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(RepositoryProperties properties) {
+        this.properties = properties;
     }
 }

@@ -9,4 +9,20 @@
     <string name="commit_message">commit message</string>
     <string name="build_id_commit_message_separator"> • </string>
     <string name="loading_placeholder">Loading…</string>
+    <string name="definition_author">definition author</string>
+    <string name="build_finish_time">build finish time</string>
+    <string name="latest_build">Latest build</string>
+    <string name="completed_build">Completed build</string>
+    <string name="author">Author</string>
+    <string name="repository">Repository</string>
+    <string name="main_branch">Main branch: </string>
+    <string name="repository_main_branch">repository main branch</string>
+    <string name="last_updated">Last updated: </string>
+    <string name="last_updated_time">last updated time</string>
+    <string name="path">Path</string>
+    <string name="definition_path">definition path</string>
+    <string name="created">Created</string>
+    <string name="definition_created">definition created</string>
+    <string name="open_definition">Open definition</string>
+    <string name="author_name">Author name</string>
 </resources>

@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,37 +19,55 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.capchik.personalproject.azureDevOpsModels.ApiListResponse;
 import ru.capchik.personalproject.azureDevOpsModels.BuildResponse;
-import ru.capchik.personalproject.azureDevOpsModels.Pipeline;
 
 public class MainActivity extends AppCompatActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState)  {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         AzureDevOpsConfiguration configuration = new AzureDevOpsConfiguration(
                 getResources().getString(R.string.azureDevOpsOrganization),
                 getResources().getString(R.string.azureDevOpsProject)
         );
+        AzureDevopsApiSingleton.Init(configuration);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://dev.azure.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        setTitle(getResources().getString(R.string.azureDevOpsProject) + " builds");
 
-        AzureDevOpsApi azureDevOpsApi = retrofit.create(AzureDevOpsApi.class);
-        Call<ApiListResponse<BuildResponse>> pipelines = azureDevOpsApi.getBuilds(configuration.getOrganization(), configuration.getProject());
+        Call<ApiListResponse<BuildResponse>> pipelines = AzureDevopsApiSingleton.getInstance().getBuilds();
         pipelines.enqueue(new Callback<ApiListResponse<BuildResponse>>() {
             @Override
             public void onResponse(@NonNull Call<ApiListResponse<BuildResponse>> call, @NonNull Response<ApiListResponse<BuildResponse>> response) {
                 ApiListResponse<BuildResponse> body = response.body();
                 assert body != null;
                 RecyclerView list = MainActivity.this.findViewById(R.id.pipelines_list);
-                list.setAdapter(new PipelinesAdapter(body));
+                list.setAdapter(new PipelinesAdapter(body, (build) -> {
+                    Intent intent = new Intent(MainActivity.this, PipelineInfoActivity.class);
+                    intent.putExtra("definition_id", build.getDefinition().getId());
+                    intent.putExtra("definition_name", build.getDefinition().getName());
+                    startActivity(intent);
+                }));
                 list.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                 TextView loadingText = findViewById(R.id.loading_placeholder);
                 loadingText.setVisibility(View.GONE);
+
+                list.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+                    @Override
+                    public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+
+                    }
+
+                    @Override
+                    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+                    }
+                });
+
             }
 
             @Override

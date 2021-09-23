@@ -32,6 +32,17 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/build_finish_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3sp"
+            android:layout_toEndOf="@id/definition_name"
+            android:text="@string/build_finish_time"
+            android:layout_alignParentEnd="true"
+            android:gravity="end"
+            android:textSize="12sp" />
+
+        <TextView
             android:id="@+id/build_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

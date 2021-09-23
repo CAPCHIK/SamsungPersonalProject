@@ -2,9 +2,15 @@ package ru.capchik.personalproject.azureDevOpsModels;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import java.util.Date;
+import java.util.Locale;
 
 public class BuildResponse {
+
+    private PrettyTime prettyTime =  new PrettyTime(Locale.US);
+
     @SerializedName("_links")
     private ApiLinksObject links;
 
@@ -17,6 +23,11 @@ public class BuildResponse {
     private Date queueTime;
     private Date startTime;
     private Date finishTime;
+
+    public String getPrettyFinishTime() {
+        return prettyTime.format(finishTime);
+    }
+
     private String url;
     private Definition definition;
     private String uri;
