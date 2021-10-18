@@ -9,7 +9,7 @@ import java.util.Locale;
 
 public class BuildResponse {
 
-    private PrettyTime prettyTime =  new PrettyTime(Locale.US);
+    private final PrettyTime prettyTime =  new PrettyTime(Locale.US);
 
     @SerializedName("_links")
     private ApiLinksObject links;

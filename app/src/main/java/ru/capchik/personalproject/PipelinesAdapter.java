@@ -9,19 +9,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 import ru.capchik.personalproject.azureDevOpsModels.ApiListResponse;
 import ru.capchik.personalproject.azureDevOpsModels.BuildResponse;
+import ru.capchik.personalproject.models.CompactBuildInfo;
 
 public class PipelinesAdapter extends RecyclerView.Adapter<PipelinesAdapter.ViewHolder> {
 
     public interface OnClickListener {
-        void Click(BuildResponse build);
+        void Click(CompactBuildInfo build);
     }
 
-    private final ApiListResponse<BuildResponse> data;
+    private final ArrayList<CompactBuildInfo> data;
     private final OnClickListener onClickListener;
 
-    public PipelinesAdapter(ApiListResponse<BuildResponse> data, OnClickListener onClickListener) {
+    public PipelinesAdapter(ArrayList<CompactBuildInfo> data, OnClickListener onClickListener) {
         this.data = data;
         this.onClickListener = onClickListener;
     }
@@ -38,27 +41,27 @@ public class PipelinesAdapter extends RecyclerView.Adapter<PipelinesAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        BuildResponse build = data.getValue().get(position);
+        CompactBuildInfo build = data.get(position);
 
-        holder.setBuildResponse(build);
+        holder.setBuildInfo(build);
         holder.getBuildSuccessImageView().setImageResource(
-                build.getResult().equals("succeeded") ?
+                build.isSucceeded() ?
                     R.drawable.build_success :
                     R.drawable.build_failed);
-        holder.getTitleTextView().setText(build.getDefinition().getName());
+        holder.getTitleTextView().setText(build.getDefinitionName());
         holder.getBuildId().setText(build.getBuildNumber());
-        holder.getCommitMessage().setText(build.getTriggerInfo().getCiMessage());
+        holder.getCommitMessage().setText(build.getCommitMessage());
         holder.getFinishedDate().setText(build.getPrettyFinishTime());
     }
 
     @Override
     public int getItemCount() {
-        return data.getCount();
+        return data.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final OnClickListener onClickListener;
-        private BuildResponse buildResponse;
+        private CompactBuildInfo buildInfo;
 
         private final ImageView buildSuccessImageView;
         private final TextView titleTextView;
@@ -70,7 +73,7 @@ public class PipelinesAdapter extends RecyclerView.Adapter<PipelinesAdapter.View
             super(view);
             this.onClickListener = onClickListener;
 
-            view.setOnClickListener(view1 -> this.onClickListener.Click(buildResponse));
+            view.setOnClickListener(view1 -> this.onClickListener.Click(buildInfo));
 
             buildSuccessImageView = view.findViewById(R.id.success_image);
             titleTextView = view.findViewById(R.id.definition_name);
@@ -95,8 +98,8 @@ public class PipelinesAdapter extends RecyclerView.Adapter<PipelinesAdapter.View
             return commitMessage;
         }
 
-        public void setBuildResponse(BuildResponse buildResponse) {
-            this.buildResponse = buildResponse;
+        public void setBuildInfo(CompactBuildInfo buildInfo) {
+            this.buildInfo = buildInfo;
         }
 
         public TextView getFinishedDate() {

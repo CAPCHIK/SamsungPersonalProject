@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,6 +21,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.capchik.personalproject.azureDevOpsModels.ApiListResponse;
 import ru.capchik.personalproject.azureDevOpsModels.BuildResponse;
+import ru.capchik.personalproject.mappers.CompactBuildInfoMapper;
+import ru.capchik.personalproject.models.CompactBuildInfo;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -40,11 +44,12 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<ApiListResponse<BuildResponse>> call, @NonNull Response<ApiListResponse<BuildResponse>> response) {
                 ApiListResponse<BuildResponse> body = response.body();
                 assert body != null;
+                ArrayList<CompactBuildInfo> compactBuildInfos = CompactBuildInfoMapper.map(body);
                 RecyclerView list = MainActivity.this.findViewById(R.id.pipelines_list);
-                list.setAdapter(new PipelinesAdapter(body, (build) -> {
+                list.setAdapter(new PipelinesAdapter(compactBuildInfos, (build) -> {
                     Intent intent = new Intent(MainActivity.this, PipelineInfoActivity.class);
-                    intent.putExtra("definition_id", build.getDefinition().getId());
-                    intent.putExtra("definition_name", build.getDefinition().getName());
+                    intent.putExtra("definition_id", build.getDefinitionId());
+                    intent.putExtra("definition_name", build.getDefinitionName());
                     startActivity(intent);
                 }));
                 list.setLayoutManager(new LinearLayoutManager(MainActivity.this));

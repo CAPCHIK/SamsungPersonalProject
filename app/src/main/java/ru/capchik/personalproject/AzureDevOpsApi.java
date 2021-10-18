@@ -12,5 +12,4 @@ public interface AzureDevOpsApi {
     Call<ApiListResponse<BuildResponse>> getBuilds();
     @GET("build/definitions/{definitionId}?api-version=5.0&maxBuildsPerDefinition=1&includeLatestBuilds=true")
     Call<FullDefinitionResponse> getDefinition(@Path("definitionId") int definitionId);
-
 }
