@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ru.capchik.personalproject.azureDevOpsModels.BuildResponse;
+import ru.capchik.personalproject.models.CompactBuildInfo;
 
 public class BuildItemFragment extends Fragment {
 
@@ -39,14 +40,14 @@ public class BuildItemFragment extends Fragment {
         return inflater.inflate(R.layout.pipeline_item, container, false);
     }
 
-    public void fillInfo(BuildResponse build) {
+    public void fillInfo(CompactBuildInfo build) {
         buildSuccessImageView.setImageResource(
-                build.getResult().equals("succeeded") ?
+                build.isSucceeded() ?
                         R.drawable.build_success :
                         R.drawable.build_failed);
-        titleTextView.setText(build.getDefinition().getName());
+        titleTextView.setText(build.getDefinitionName());
         buildId.setText(build.getBuildNumber());
-        commitMessage.setText(build.getTriggerInfo().getCiMessage());
+        commitMessage.setText(build.getCommitMessage());
         finishedDate.setText(build.getPrettyFinishTime());
     }
 

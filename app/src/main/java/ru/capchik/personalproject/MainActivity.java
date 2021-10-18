@@ -43,11 +43,17 @@ public class MainActivity extends AppCompatActivity {
         setTitle(getResources().getString(R.string.azureDevOpsProject) + " builds");
 
         CacheDb db = new CacheDb(this);
+        loadDataFromCache(db);
 
-
-//        loadDataFromCache(db);
-        Handler handler = new DataFromServerHandler(Looper.getMainLooper(), db);
-        AzureDevopsApiSingleton.getInstance().startGetBuilds(handler);
+        DataFromServerHandler handler = new DataFromServerHandler(Looper.getMainLooper(), db);
+        AzureDevopsApiSingleton.getInstance().startGetBuilds(data -> {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList("compactBuildInfo", data);
+                    Message msg = new Message();
+                    msg.setData(bundle);
+                    handler.sendMessage(msg);
+                },
+                (error) -> handler.sendEmptyMessage(DataFromServerHandler.ERROR_CODE));
     }
 
     private void loadDataFromCache(CacheDb db) {
@@ -87,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
 
     private class DataFromServerHandler extends Handler {
 
+        public static final int ERROR_CODE = 1;
+
         private final CacheDb cacheDb;
 
         public DataFromServerHandler(@NonNull Looper looper, CacheDb cacheDb) {
@@ -96,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void handleMessage(@NonNull Message msg) {
-            if (msg.what == AzureDevOpsApi.ERROR_CODE) {
+            if (msg.what == ERROR_CODE) {
                 Toast.makeText(MainActivity.this, getResources().getString(R.string.cantLoadDataFromNetwork), Toast.LENGTH_LONG).show();
             } else {
                 ArrayList<CompactBuildInfo> compactBuildInfo = msg.getData().getParcelableArrayList("compactBuildInfo");

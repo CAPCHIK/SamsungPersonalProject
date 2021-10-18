@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class FullDefinitionResponse {
-   private static PrettyTime prettyTime = new PrettyTime(Locale.US);
-
     private ApiLinksObject _links;
     private BuildResponse latestBuild;
     private BuildResponse latestCompletedBuild;
@@ -174,9 +172,6 @@ public class FullDefinitionResponse {
 
     public Date getCreatedDate() {
         return createdDate;
-    }
-    public String getCreatedDatePretty() {
-        return prettyTime.format(getCreatedDate());
     }
 
     public void setCreatedDate(Date createdDate) {

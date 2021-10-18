@@ -8,9 +8,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class BuildResponse {
-
-    private final PrettyTime prettyTime =  new PrettyTime(Locale.US);
-
     @SerializedName("_links")
     private ApiLinksObject links;
 
@@ -23,10 +20,6 @@ public class BuildResponse {
     private Date queueTime;
     private Date startTime;
     private Date finishTime;
-
-    public String getPrettyFinishTime() {
-        return prettyTime.format(finishTime);
-    }
 
     private String url;
     private Definition definition;

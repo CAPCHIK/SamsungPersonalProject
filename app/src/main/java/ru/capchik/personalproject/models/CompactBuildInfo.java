@@ -11,6 +11,7 @@ import java.util.Locale;
 public class CompactBuildInfo implements Parcelable {
     private static final PrettyTime prettyTime =  new PrettyTime(Locale.US);
 
+    private final int buildId;
     private final int definitionId;
     private final boolean succeeded;
     private final String definitionName;
@@ -19,7 +20,8 @@ public class CompactBuildInfo implements Parcelable {
     private final Date finishTime;
 
 
-    public CompactBuildInfo(int definitionId, boolean succeeded, String definitionName, String buildNumber, String commitMessage, Date finishTime) {
+    public CompactBuildInfo(int buildId, int definitionId, boolean succeeded, String definitionName, String buildNumber, String commitMessage, Date finishTime) {
+        this.buildId = buildId;
         this.definitionId = definitionId;
         this.succeeded = succeeded;
         if (definitionName == null) {
@@ -35,6 +37,9 @@ public class CompactBuildInfo implements Parcelable {
         }
         this.commitMessage = commitMessage;
         this.finishTime = finishTime;
+    }
+    public int getBuildId() {
+        return buildId;
     }
 
     public int getDefinitionId() {
@@ -78,6 +83,7 @@ public class CompactBuildInfo implements Parcelable {
         }
     };
     private CompactBuildInfo(Parcel in) {
+        buildId = in.readInt();
         definitionId = in.readInt();
         succeeded = in.readByte() != 0;
         definitionName = in.readString();
@@ -92,6 +98,7 @@ public class CompactBuildInfo implements Parcelable {
     }
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(buildId);
         parcel.writeInt(definitionId);
         parcel.writeByte((byte) (succeeded ? 1 : 0));
         parcel.writeString(definitionName);

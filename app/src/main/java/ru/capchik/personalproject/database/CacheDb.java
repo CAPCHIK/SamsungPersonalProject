@@ -21,6 +21,7 @@ public class CacheDb {
 
     private static final String TABLE_COMPACT_ITEMS_CACHE = "CompactItemsCache";
 
+    private static final String COLUMN_BUILD_ID = "buildId";
     private static final String COLUMN_DEFINITION_ID = "definitionId";
     private static final String COLUMN_SUCCEEDED = "succeeded";
     private static final String COLUMN_DEFINITION_NAME = "definitionName";
@@ -50,6 +51,7 @@ public class CacheDb {
 
             for (CompactBuildInfo bi : newBuildInfo) {
                 ContentValues cv = new ContentValues();
+                cv.put(COLUMN_BUILD_ID, bi.getBuildId());
                 cv.put(COLUMN_DEFINITION_ID, bi.getDefinitionId());
                 cv.put(COLUMN_SUCCEEDED, bi.isSucceeded());
                 cv.put(COLUMN_DEFINITION_NAME, bi.getDefinitionName());
@@ -70,6 +72,7 @@ public class CacheDb {
         ArrayList<CompactBuildInfo> result = new ArrayList<>();
         try (Cursor query = database.query(TABLE_COMPACT_ITEMS_CACHE, null, null, null, null, null, COLUMN_FINISH_TIME + " DESC")) {
             while (query.moveToNext()) {
+                int buildId = query.getInt(query.getColumnIndexOrThrow(COLUMN_BUILD_ID));
                 int definitionId = query.getInt(query.getColumnIndexOrThrow(COLUMN_DEFINITION_ID));
                 boolean succeeded = query.getInt(query.getColumnIndexOrThrow(COLUMN_SUCCEEDED)) == 1;
                 String definitionName = query.getString(query.getColumnIndexOrThrow(COLUMN_DEFINITION_NAME));
@@ -79,7 +82,7 @@ public class CacheDb {
                 long finishDateLong = query.getLong(query.getColumnIndexOrThrow(COLUMN_FINISH_TIME));
                 Date finishTime = new Date(finishDateLong);
 
-                result.add(new CompactBuildInfo(definitionId, succeeded, definitionName, buildNumber, commitMessage, finishTime));
+                result.add(new CompactBuildInfo(buildId, definitionId, succeeded, definitionName, buildNumber, commitMessage, finishTime));
             }
         }
         return result;
@@ -87,7 +90,7 @@ public class CacheDb {
 
     private static class CacheDbOpenHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "personalproject.db";
-        private static final int DATABASE_VERSION = 2;
+        private static final int DATABASE_VERSION = 3;
 
         public CacheDbOpenHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -98,6 +101,7 @@ public class CacheDb {
             String query = "create table " + TABLE_COMPACT_ITEMS_CACHE + "" +
                     "(" +
                     COLUMN_DEFINITION_ID + " int not null constraint " + TABLE_COMPACT_ITEMS_CACHE + "_pk primary key," +
+                    COLUMN_BUILD_ID + " int not null," +
                     COLUMN_SUCCEEDED + " boolean not null," +
                     COLUMN_DEFINITION_NAME + " TEXT not null," +
                     COLUMN_BUILD_NUMBER + " TEXT not null," +
