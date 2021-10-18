@@ -18,8 +18,17 @@ public class CompactBuildInfo {
     public CompactBuildInfo(int definitionId, boolean succeeded, String definitionName, String buildNumber, String commitMessage, Date finishTime) {
         this.definitionId = definitionId;
         this.succeeded = succeeded;
+        if (definitionName == null) {
+            definitionName = "NO MESSAGE";
+        }
         this.definitionName = definitionName;
+        if (buildNumber == null) {
+            buildNumber = "NO MESSAGE";
+        }
         this.buildNumber = buildNumber;
+        if (commitMessage == null) {
+            commitMessage = "NO MESSAGE";
+        }
         this.commitMessage = commitMessage;
         this.finishTime = finishTime;
     }

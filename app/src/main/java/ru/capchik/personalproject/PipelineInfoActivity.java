@@ -120,6 +120,7 @@ public class PipelineInfoActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<FullDefinitionResponse> call, @NonNull Throwable t) {
                 Toast.makeText(PipelineInfoActivity.this, getResources().getString(R.string.cantLoadDataFromNetwork), Toast.LENGTH_LONG).show();
+                finish();
             }
         });
 
