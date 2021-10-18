@@ -1,5 +1,6 @@
 package ru.capchik.personalproject;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -9,14 +10,8 @@ public class AzureDevopsApiSingleton {
         return instance;
     }
     public static void Init(AzureDevOpsConfiguration configuration) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://dev.azure.com/" +
-                          configuration.getOrganization() + "/" +
-                          configuration.getProject() +"/_apis/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        instance = retrofit.create(AzureDevOpsApi.class);
-
+        instance = new AzureDevOpsApi("https://dev.azure.com/" +
+                configuration.getOrganization() + "/" +
+                configuration.getProject() +"/_apis/");
     }
 }

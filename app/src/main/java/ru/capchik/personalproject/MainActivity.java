@@ -7,6 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -39,32 +44,15 @@ public class MainActivity extends AppCompatActivity {
 
         CacheDb db = new CacheDb(this);
 
-        loadDataFromCache(db);
-        loadDataFromServer(db);
+
+//        loadDataFromCache(db);
+        Handler handler = new DataFromServerHandler(Looper.getMainLooper(), db);
+        AzureDevopsApiSingleton.getInstance().startGetBuilds(handler);
     }
 
     private void loadDataFromCache(CacheDb db) {
         ArrayList<CompactBuildInfo> cachedBuildItems = db.getCachedBuildItems();
         fillListWithData(cachedBuildItems);
-    }
-
-    private void loadDataFromServer(CacheDb db) {
-        Call<ApiListResponse<BuildResponse>> pipelines = AzureDevopsApiSingleton.getInstance().getBuilds();
-        pipelines.enqueue(new Callback<ApiListResponse<BuildResponse>>() {
-            @Override
-            public void onResponse(@NonNull Call<ApiListResponse<BuildResponse>> call, @NonNull Response<ApiListResponse<BuildResponse>> response) {
-                ApiListResponse<BuildResponse> body = response.body();
-                assert body != null;
-                ArrayList<CompactBuildInfo> compactBuildInfo = CompactBuildInfoMapper.map(body);
-                db.updateCompactBuildInfo(compactBuildInfo);
-                fillListWithData(compactBuildInfo);
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ApiListResponse<BuildResponse>> call, @NonNull Throwable t) {
-                Toast.makeText(MainActivity.this, getResources().getString(R.string.cantLoadDataFromNetwork), Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     private void fillListWithData(ArrayList<CompactBuildInfo> compactBuildInfo) {
@@ -95,5 +83,26 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private class DataFromServerHandler extends Handler {
+
+        private final CacheDb cacheDb;
+
+        public DataFromServerHandler(@NonNull Looper looper, CacheDb cacheDb) {
+            super(looper);
+            this.cacheDb = cacheDb;
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            if (msg.what == AzureDevOpsApi.ERROR_CODE) {
+                Toast.makeText(MainActivity.this, getResources().getString(R.string.cantLoadDataFromNetwork), Toast.LENGTH_LONG).show();
+            } else {
+                ArrayList<CompactBuildInfo> compactBuildInfo = msg.getData().getParcelableArrayList("compactBuildInfo");
+                cacheDb.updateCompactBuildInfo(compactBuildInfo);
+                fillListWithData(compactBuildInfo);
+            }
+        }
     }
 }
