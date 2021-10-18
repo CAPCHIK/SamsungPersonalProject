@@ -102,8 +102,6 @@ public class PipelineInfoActivity extends AppCompatActivity {
 
                 });
 
-
-
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 BuildItemFragment latestBuildFragment = (BuildItemFragment) fragmentManager.findFragmentById(R.id.latest_build_fragment);
                 BuildItemFragment latestCompletedBuildFragment = (BuildItemFragment) fragmentManager.findFragmentById(R.id.latest_completed_build_fragment);
@@ -121,7 +119,7 @@ public class PipelineInfoActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<FullDefinitionResponse> call, @NonNull Throwable t) {
-                Toast.makeText(PipelineInfoActivity.this, "Hello from error", Toast.LENGTH_LONG).show();
+                Toast.makeText(PipelineInfoActivity.this, getResources().getString(R.string.cantLoadDataFromNetwork), Toast.LENGTH_LONG).show();
             }
         });
 

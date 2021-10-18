@@ -25,4 +25,5 @@
     <string name="definition_created">definition created</string>
     <string name="open_definition">Open definition</string>
     <string name="author_name">Author name</string>
+    <string name="cantLoadDataFromNetwork">Не удалось загрузить последнюю информацию</string>
 </resources>

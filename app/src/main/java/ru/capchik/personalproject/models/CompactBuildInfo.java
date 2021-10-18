@@ -45,6 +45,10 @@ public class CompactBuildInfo {
         return commitMessage;
     }
 
+    public Date getFinishTime() {
+        return finishTime;
+    }
+
     public String getPrettyFinishTime() {
         return prettyTime.format(finishTime);
     }

@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import ru.capchik.personalproject.azureDevOpsModels.ApiListResponse;
-import ru.capchik.personalproject.azureDevOpsModels.BuildResponse;
 import ru.capchik.personalproject.models.CompactBuildInfo;
 
 public class PipelinesAdapter extends RecyclerView.Adapter<PipelinesAdapter.ViewHolder> {
