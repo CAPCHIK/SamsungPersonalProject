@@ -27,6 +27,7 @@ import ru.capchik.personalproject.azureDevOpsModels.BuildResponse;
 import ru.capchik.personalproject.database.CacheDb;
 import ru.capchik.personalproject.mappers.CompactBuildInfoMapper;
 import ru.capchik.personalproject.models.CompactBuildInfo;
+import ru.capchik.personalproject.models.FullDefinitionInfo;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -46,14 +47,10 @@ public class MainActivity extends AppCompatActivity {
         loadDataFromCache(db);
 
         DataFromServerHandler handler = new DataFromServerHandler(Looper.getMainLooper(), db);
-        AzureDevopsApiSingleton.getInstance().startGetBuilds(data -> {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList("compactBuildInfo", data);
-                    Message msg = new Message();
-                    msg.setData(bundle);
-                    handler.sendMessage(msg);
-                },
-                (error) -> handler.sendEmptyMessage(DataFromServerHandler.ERROR_CODE));
+        AzureDevopsApiSingleton.getInstance().startGetBuilds(
+                handler::sendCompactBuildInfo,
+                (error) -> handler.sendEmptyMessage(DataFromServerHandler.ERROR_CODE)
+        );
     }
 
     private void loadDataFromCache(CacheDb db) {
@@ -102,7 +99,16 @@ public class MainActivity extends AppCompatActivity {
             this.cacheDb = cacheDb;
         }
 
-        @Override
+        public void sendCompactBuildInfo(ArrayList<CompactBuildInfo> compactBuildInfo){
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("compactBuildInfo", compactBuildInfo);
+            Message msg = new Message();
+            msg.setData(bundle);
+            sendMessage(msg);
+        }
+
+
+            @Override
         public void handleMessage(@NonNull Message msg) {
             if (msg.what == ERROR_CODE) {
                 Toast.makeText(MainActivity.this, getResources().getString(R.string.cantLoadDataFromNetwork), Toast.LENGTH_LONG).show();

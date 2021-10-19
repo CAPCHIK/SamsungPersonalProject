@@ -64,8 +64,9 @@ public class PipelineInfoActivity extends AppCompatActivity {
 
         DataFromServerHandler handler = new DataFromServerHandler(Looper.getMainLooper());
         AzureDevopsApiSingleton.getInstance().startGetDefinition(definitionId,
-                definition -> handler.sendMessage(handler.prepareMessage(definition)),
-                error -> handler.sendEmptyMessage(DataFromServerHandler.ERROR_CODE));
+                handler::sendFullDefinitionMessage,
+                error -> handler.sendEmptyMessage(DataFromServerHandler.ERROR_CODE)
+        );
     }
 
     private void fillFromData(ru.capchik.personalproject.models.FullDefinitionInfo definition) {
@@ -127,12 +128,12 @@ public class PipelineInfoActivity extends AppCompatActivity {
             super(looper);
         }
 
-        public Message prepareMessage(FullDefinitionInfo fullDefinitionInfo){
+        public void sendFullDefinitionMessage(FullDefinitionInfo fullDefinitionInfo){
             Bundle bundle = new Bundle();
             bundle.putParcelable("fullDefinitionInfo", fullDefinitionInfo);
             Message msg = new Message();
             msg.setData(bundle);
-            return msg;
+            sendMessage(msg);
         }
 
         @Override
