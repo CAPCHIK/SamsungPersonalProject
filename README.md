@@ -27,7 +27,7 @@
 
 ## APK
 
-Проверить приложение можно, скачав `app-debug.apk` со [страницы релизов](https://github.com/CAPCHIK/SamsungPersonalProject/releases/tag/v1.0)
+Проверить приложение можно, скачав `app-debug.apk` со [страницы релизов](https://github.com/CAPCHIK/SamsungPersonalProject/releases/latest)
 
 ## Демонстрация
 | Список сценариев сборки | Экран с информацией о сценарии |
