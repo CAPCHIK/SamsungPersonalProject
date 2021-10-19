@@ -117,6 +117,9 @@ public class PipelineInfoActivity extends AppCompatActivity {
         if (definition.getLatestBuild().getBuildId() != definition.getLatestCompletedBuild().getBuildId()) {
             findViewById(R.id.latest_completed_build_row).setVisibility(View.VISIBLE);
         }
+
+        findViewById(R.id.loading_placeholder).setVisibility(View.GONE);
+        findViewById(R.id.content_items).setVisibility(View.VISIBLE);
     }
 
     private class DataFromServerHandler extends Handler {
